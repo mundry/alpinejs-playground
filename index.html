@@ -4,6 +4,13 @@
         <meta charset="utf-8">
         <title>Alpine.js Playground</title>
         <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <style>
+            .highlight {
+                color: indianred;
+                font-weight: bold;
+                font-size: 2em;
+            }
+        </style>
     </head>
     <body>
         <h1 x-data="{ message: 'Alpine.js Playground' }" x-text="message"></h1>
@@ -21,14 +28,28 @@
             search: '',
             items: ['foo', 'bar', 'baz'],
             get filteredItems() {
-                return this.items.filter(i => i.toLowerCase().includes(this.search.toLowerCase()));
+                return this.items.reduce((agg, item) => {
+                    // If the search field is empty, return the item verbatim,
+                    // instead of filling it with empty span's.
+                    if (this.search.length === 0) {
+                        return [...agg, item];
+                    }
+
+                    const needle = this.search.toLowerCase();
+                    if (!item.toLowerCase().includes(needle)) {
+                        return agg;
+                    }
+
+                    agg.push(item.replaceAll(needle, (s) => `<span class='highlight'>${s}</span>`));
+                    return agg;
+                }, []);
             }
         }"
         >
             <input type="search" x-model="search" placeholder="What are you looking for?" />
             <ul>
                 <template x-for="item in filteredItems" :key="item">
-                    <li x-text="item"></li>
+                    <li x-html="item"></li>
                 </template>
             </ul>
         </div>
