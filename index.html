@@ -26,6 +26,7 @@
         </div>
         <div x-data="{
             search: '',
+            loading: true,
             items: [],
             get filteredItems() {
                 return this.items.reduce((agg, item) => {
@@ -45,9 +46,14 @@
                 }, []);
             }
         }"
-        x-init="items = (await (await fetch('https://jsonplaceholder.typicode.com/albums')).json()).map(album => album.title)"
+        x-init="items = (await (await fetch('https://jsonplaceholder.typicode.com/albums')).json()).map(album => album.title); loading = false"
         >
-            <input type="search" x-model="search" placeholder="What are you looking for?" />
+            <template x-if="loading">
+                <p>Loading search items...</p>
+            </template>
+            <template x-if="!loading">
+                <input type="search" x-model="search" placeholder="What are you looking for?" />
+            </template>
             <ul>
                 <template x-for="item in filteredItems" :key="item">
                     <li x-html="item"></li>
