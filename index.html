@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Alpine.js Playground</title>
+        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    </head>
+    <body>
+        <h1 x-data="{ message: 'Alpine.js Playground' }" x-text="message"></h1>
+
+        <div x-data="{count: 0}">
+            <button @click="count++">Increment</button>
+            <span x-text="count"></span> <span x-text="count === 1 ? 'Bunny' : 'Bunnies'"></span>
+            <button @click="count--">Decrement</button>
+        </div>
+        <div x-data="{open: false}" style="border: 1px solid #BBB">
+            <button @click="open=!open">Toggle</button>
+            <p x-show="open" x-transition @click.outside="open = false"><span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium cupiditate doloribus error eum fugit, harum illo minima, natus necessitatibus nobis praesentium qui quos repellendus sint ut voluptatibus voluptatum! Beatae, eos.</span><span>Ab accusamus ad alias aperiam assumenda autem consectetur debitis deserunt dicta, dolorum ea explicabo impedit ipsam minima mollitia, nihil optio quae quidem quos reiciendis repellendus sapiente sed tempore voluptas voluptatum.</span><span>Ab cum enim est, eveniet incidunt necessitatibus, neque nulla obcaecati odio pariatur quasi veniam voluptates voluptatum. A at, cupiditate, eaque labore, nesciunt non nostrum pariatur quisquam sed suscipit veritatis voluptatem!</span><span>Asperiores consequatur esse iste modi neque perferendis placeat sit. Accusantium, consequatur error iste maxime mollitia natus nostrum odio optio porro qui quidem, quisquam veniam. Animi aut corporis magnam nam nostrum.</span><span>Accusamus dolores, excepturi fugiat id impedit iure maiores quae quasi quia rem ut, vero voluptate voluptates. Adipisci aut deleniti dolorum explicabo, fugiat illo illum pariatur, quaerat quidem rerum sed ut.</span></p>
+        </div>
+        <div x-data="{
+            search: '',
+            items: ['foo', 'bar', 'baz'],
+            get filteredItems() {
+                return this.items.filter(i => i.toLowerCase().includes(this.search.toLowerCase()));
+            }
+        }"
+        >
+            <input type="search" x-model="search" placeholder="What are you looking for?" />
+            <ul>
+                <template x-for="item in filteredItems" :key="item">
+                    <li x-text="item"></li>
+                </template>
+            </ul>
+        </div>
+    </body>
+</html>
