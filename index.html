@@ -57,7 +57,7 @@
             <template x-if="!loading">
                 <div>
                     <input type="search" x-model="search" placeholder="What are you looking for?" />
-                    <p x-text="resultCount === 0 ? 'No results found!' : resultCount + (resultCount === 1 ? ' hit' : ' hits')"></p>
+                    <p x-show="search.length > 0" x-text="resultCount === 0 ? 'No results found!' : resultCount + (resultCount === 1 ? ' hit' : ' hits')"></p>
                 </div>
             </template>
             <ul>
