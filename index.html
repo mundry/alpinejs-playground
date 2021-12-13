@@ -28,8 +28,9 @@
             search: '',
             loading: true,
             items: [],
+            resultCount: 0,
             get filteredItems() {
-                return this.items.reduce((agg, item) => {
+                const results = this.items.reduce((agg, item) => {
                     // If the search field is empty, return the item verbatim,
                     // instead of filling it with empty span's.
                     if (this.search.length === 0) {
@@ -44,6 +45,8 @@
                     agg.push(item.replaceAll(needle, (s) => `<span class='highlight'>${s}</span>`));
                     return agg;
                 }, []);
+                this.resultCount = this.search.length === 0 ? 0 : results.length;
+                return results;
             }
         }"
         x-init="items = (await (await fetch('https://jsonplaceholder.typicode.com/albums')).json()).map(album => album.title); loading = false"
@@ -52,7 +55,10 @@
                 <p>Loading search items...</p>
             </template>
             <template x-if="!loading">
-                <input type="search" x-model="search" placeholder="What are you looking for?" />
+                <div>
+                    <input type="search" x-model="search" placeholder="What are you looking for?" />
+                    <p x-text="resultCount === 0 ? 'No results found!' : resultCount + (resultCount === 1 ? ' hit' : ' hits')"></p>
+                </div>
             </template>
             <ul>
                 <template x-for="item in filteredItems" :key="item">
